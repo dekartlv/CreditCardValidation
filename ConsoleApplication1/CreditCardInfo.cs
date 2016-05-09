@@ -5,7 +5,7 @@ namespace CreditCardValidationApp
 {
     public static class CreditCardInfo
     {
-        public enum CardType {Visa,MasterCard,Maestro,Amex,JCB,Unknown};
+        public enum CardType {Visa,Master_Card,Maestro,American_Express,JCB,Unknown};
 
         private static string FormatCardNumber(string cardNumberInput)
         {
@@ -22,23 +22,30 @@ namespace CreditCardValidationApp
         public static string GetCreditCardVendor(string cardNumberInput)
         {
             string cardNumberClean = FormatCardNumber(cardNumberInput);
-            switch (cardNumberClean[0]-'0')
+
+            if (IsCreditCardNumberValid(cardNumberClean))
             {
-                case 3:
-                    if (int.Parse(cardNumberClean.Substring(0, 4)) >= 3528 && int.Parse(cardNumberClean.Substring(0, 4)) <= 3589)
-                        return CardType.JCB.ToString();
-                    if (int.Parse(cardNumberClean.Substring(0, 2)) == 34 || int.Parse(cardNumberClean.Substring(0, 2)) == 37)
-                        return CardType.Amex.ToString();
-                    else return CardType.Unknown.ToString();
-                case 4: return CardType.Visa.ToString();
-                case 5:
-                    if (int.Parse(cardNumberClean.Substring(0, 2)) >= 51 && int.Parse(cardNumberClean.Substring(0, 2)) <= 55)
-                        return CardType.MasterCard.ToString();
-                    else if (int.Parse(cardNumberClean.Substring(0, 2)) == 50 ||
-                        (int.Parse(cardNumberClean.Substring(0, 2)) >= 56 && int.Parse(cardNumberClean.Substring(0, 2)) <= 69))
-                        return CardType.Maestro.ToString();
-                    else return CardType.Unknown.ToString();
-                default: return CardType.Unknown.ToString();
+                switch (cardNumberClean[0] - '0')
+                {
+                    case 3:
+                        if (int.Parse(cardNumberClean.Substring(0, 4)) >= 3528 && int.Parse(cardNumberClean.Substring(0, 4)) <= 3589)
+                            return CardType.JCB.ToString();
+                        if (int.Parse(cardNumberClean.Substring(0, 2)) == 34 || int.Parse(cardNumberClean.Substring(0, 2)) == 37)
+                            return CardType.American_Express.ToString();
+                        else return CardType.Unknown.ToString();
+                    case 4: return CardType.Visa.ToString();
+                    case 5:
+                        if (int.Parse(cardNumberClean.Substring(0, 2)) >= 51 && int.Parse(cardNumberClean.Substring(0, 2)) <= 55)
+                            return CardType.Master_Card.ToString();
+                        else if (int.Parse(cardNumberClean.Substring(0, 2)) == 50 ||
+                            (int.Parse(cardNumberClean.Substring(0, 2)) >= 56 && int.Parse(cardNumberClean.Substring(0, 2)) <= 69))
+                            return CardType.Maestro.ToString();
+                        else return CardType.Unknown.ToString();
+                    default: return CardType.Unknown.ToString();
+                }
+            }
+            else {
+                return CardType.Unknown.ToString();
             }
         }
 
@@ -71,7 +78,9 @@ namespace CreditCardValidationApp
                 nextCreditCardNumber++;
             }
 
-            return nextCreditCardNumber.ToString();
+            if (GetCreditCardVendor(cardNumberClean) == GetCreditCardVendor(nextCreditCardNumber.ToString()))
+                return nextCreditCardNumber.ToString();
+            else return "Sorry, there is no next credit card number available for this vendor";
         }
 
         public static string GenerateRandomCreditCardNumber(CardType cardType, int numberLength = 16)
@@ -84,7 +93,7 @@ namespace CreditCardValidationApp
                     //numberLength for Visa credit cards could be 13 or 16 digits.
                     cardNumber += 4;
                     break;
-                case CardType.MasterCard:
+                case CardType.Master_Card:
                     cardNumber += Math.Floor((decimal)new Random().Next(51, 56));
                     break;
                 case CardType.Maestro:
@@ -94,7 +103,7 @@ namespace CreditCardValidationApp
                         cardNumber += 50;
                     else cardNumber += temp;
                     break;
-                case CardType.Amex:
+                case CardType.American_Express:
                     temp = Math.Floor((decimal)new Random().Next(1));
                     if (temp == 0)
                         cardNumber += 34;

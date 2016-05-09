@@ -19,6 +19,7 @@ namespace CreditCardValidationApp
                 "5147004213414803", // Mastercard
                 "379616680189541", // American Express
                 "4916111026621797", // Visa
+                "50000000000006114"
             };
 
             foreach (string card in cards)
@@ -30,7 +31,7 @@ namespace CreditCardValidationApp
                 Console.WriteLine();
             }
 
-            var newCard = CreditCardInfo.GenerateNextCreditCardNumber("379616680189541");
+            var newCard = CreditCardInfo.GenerateNextCreditCardNumber("4999999999999999993");
             Console.WriteLine("===================================");
             Console.WriteLine("New card number: " + newCard);
             Console.WriteLine("New card's vendor: " + CreditCardInfo.GetCreditCardVendor(newCard));
