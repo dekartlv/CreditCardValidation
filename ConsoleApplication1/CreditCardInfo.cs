@@ -35,7 +35,7 @@ namespace CreditCardValidationApp
                 case 5:
                     if (int.Parse(cardNumberClean.Substring(0, 2)) >= 51 && int.Parse(cardNumberClean.Substring(0, 2)) <= 55)
                         return CardType.MasterCard.ToString();
-                    else if (int.Parse(cardNumberClean.Substring(0, 2)) == 50 ||
+                    else if ((int.Parse(cardNumberClean.Substring(0, 3)) >= 501 && (int.Parse(cardNumberClean.Substring(0, 3)) <= 508)) ||
                         (int.Parse(cardNumberClean.Substring(0, 2)) >= 56 && int.Parse(cardNumberClean.Substring(0, 2)) <= 59))
                         return CardType.Maestro.ToString();
                     else return CardType.Unknown.ToString();

@@ -18,6 +18,7 @@ namespace CreditCardValidationApp
                 "5147004213414803", // Mastercard. True
                 "379616680189541", // American Express. True
                 "4916111026621797", // Visa. True
+                "50000000000006114", // Unknown. False
                 "35301113333000001" //JCB. False (17 digits)
             };
 
